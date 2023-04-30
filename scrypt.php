@@ -25,7 +25,7 @@ function array_mix( $array = [] ) {
 }
 
 
-	// array ex .. mix 2 array
+	// array ex .. mix two array
 	function __array_ex( &$array0, &$array2 ) {
 		if ( is_array( $array2 ) ) {
 			foreach ( $array2 as $key2 => &$val2 ) {
