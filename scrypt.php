@@ -24,6 +24,8 @@ function array_mix( $array = [] ) {
 	return $argall[0];
 }
 
+
+	// array ex .. mix 2 arrays
 	function __array_ex( &$array0, &$array2 ) {
 		if ( is_array( $array2 ) ) {
 			foreach ( $array2 as $key2 => &$val2 ) {
