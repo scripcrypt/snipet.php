@@ -210,3 +210,36 @@ function create_random_key($len=8,$types="nul") {
 
 	return substr(str_shuffle(str_repeat($str,10)),0,$len);
 }
+
+
+//--------------------------------------------------------------
+//	forced file write
+//		@param fileAP, data(text), mode=>["a"(add),"w"(overwrite)]
+//	@return line number write
+//--------------------------------------------------------------
+$ini['forced_file_write']['directory_level'] = 4;
+function forced_file_write ( $fileAP, $data, $mode="w" ) {
+	global $ini;
+
+	$ini['forced_file_write']['directory_level'] = $ini['forced_file_write']['directory_level'] ?? 4;
+	$arrayAP = explode("/",$fileAP);
+	if ( $arrayAP[0] === "" ) { array_shift($arrayAP); }
+	$baseAP = pathglue("/",array_splice($arrayAP,0,$ini['forced_file_write']['directory_level']));
+
+	if ( !mb_is_dir($baseAP) ) { return false; }
+
+	$targetAP = $baseAP;
+	foreach ( $arrayAP as $arp ) {
+		if ( !mb_is_dir($targetAP) ) {
+			$result = mkdir($targetAP,0775);
+			if (!$result) { return false; }
+		}
+		$targetAP = pathglue( $targetAP, $arp );
+	}
+
+	$fp = fopen($fileAP, $mode);
+	$result = fwrite($fp,$data);
+	fclose($fp);
+
+	return $result;
+}
